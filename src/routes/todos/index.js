@@ -1,39 +1,25 @@
-const { Router } = require("express");
-const { StatusCodes, ReasonPhrases } = require("http-status-codes");
+const express = require("express");
+const router = express.Router();
+const HttpStatus = require('http-status-codes');
 
-const TodosRouter = Router();
-
-// GET REQUESTS
-// /v1/todos/byid
-TodosRouter.get("/byid", (req, res) => {
-  const todoId = req.query.todoId;
-  if (!todoId) {
-    res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
-    return;
-  }
-  res.status(StatusCodes.OK).send("Get Todo by id");
+// PUT - /v1/todos/update: Update Todo
+router.put('/update', (req, res) => {
+    // Implementierung des Todo-Updates
+    if (!req.body.todoId || !req.body.newTodo) {
+        return res.status(HttpStatus.BAD_REQUEST).send('todoId und newTodo erforderlich.');
+    }
+    // Weitere Logik für das Todo-Update
 });
 
-TodosRouter.post("/byuserid", (req, res) => {
-  res.status(StatusCodes.OK).send("Get Todo by user id");
+// PUT - /v1/todos/mark: Todo erledigt markieren
+router.put('/mark', (req, res) => {
+    // Implementierung der Markierung als erledigt
+    if (!req.body.todoId) {
+        return res.status(HttpStatus.BAD_REQUEST).send('todoId erforderlich.');
+    }
+    // Weitere Logik für die Markierung als erledigt
 });
 
-// PUT REQUESTS
-TodosRouter.put("/mark", (req, res) => {
-  res.status(StatusCodes.OK).send("Todo als erledeigt markieren");
-});
-TodosRouter.put("/update", (req, res) => {
-  res.status(StatusCodes.OK).send("Todo aktuallisieren");
-});
+// Weitere Routen ...
 
-// POST REQUESTS
-TodosRouter.post("/create", (req, res) => {
-  res.status(StatusCodes.OK).send("Erstellen eines Todos");
-});
-
-// DELETE REQUEST
-TodosRouter.delete("/delete", (req, res) => {
-  res.status(StatusCodes.OK).send("DELTE Todo");
-});
-
-module.exports = { TodosRouter };
+module.exports = router;

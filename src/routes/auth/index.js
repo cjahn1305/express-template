@@ -1,18 +1,33 @@
-const { Router } = require("express");
-const { StatusCodes } = require("http-status-codes");
+const express = require("express");
+const router = express.Router();
+const HttpStatus = require("http-status-codes");
 
-const AuthRouter = Router();
-
-AuthRouter.get("/login", (req, res) => {
-  res.status(StatusCodes.OK).send("User Login");
+// GET - /v1/auth/login: Benutzer einloggen
+router.get("/login", (req, res) => {
+  // Implementierung des Logins
+  if (!req.query.username || !req.query.password) {
+    return res
+      .status(HttpStatus.BAD_REQUEST)
+      .send("Username und Passwort erforderlich.");
+  }
+  // Weitere Logik für den Login
 });
 
-AuthRouter.post("/signup", (req, res) => {
-  res.status(StatusCodes.OK).send("User Sign Up");
+// POST - /v1/auth/signup - Benutzer erstellen
+router.post("/signup", (req, res) => {
+  // Implementierung der Benutzererstellung
+  if (!req.body.username || !req.body.password) {
+    return res
+      .status(HttpStatus.BAD_REQUEST)
+      .send("Username und Passwort erforderlich.");
+  }
+  // Weitere Logik für die Benutzererstellung
 });
 
-AuthRouter.delete("/logout", (req, res) => {
-  res.status(StatusCodes.OK).send("Logout");
+// DELETE - /v1/auth/logout - Benutzer ausloggen
+router.delete("/logout", (req, res) => {
+  // Implementierung des Logouts
+  // Weitere Logik für das Logout
 });
 
-module.exports = { AuthRouter };
+module.exports = router;

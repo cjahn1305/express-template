@@ -1,59 +1,29 @@
-const { Router } = require("express");
-const { StatusCodes, ReasonPhrases } = require("http-status-codes");
+const express = require("express");
+const router = express.Router();
+const HttpStatus = require("http-status-codes");
 
-// Datenbank simulieren
-let profiles = [
-  {
-    id: 1,
-    firstName: "Max",
-    name: "Mustermann",
-    birthDate: new Date("1990-10-10"),
-  },
-  {
-    id: 2,
-    firstName: "Nina",
-    name: "Mustermann",
-    birthDate: new Date("1980-10-10"),
-  },
-];
+// GET - /v1/user/profile: Profil des Nutzers erhalten
+router.get("/profile", (req, res) => {
+  // Implementierung, um das Benutzerprofil zu erhalten
+  // Weitere Logik für das Benutzerprofil
+});
 
-const UserRouter = Router();
-
-//  ***GET REQUESTS***
-// Return profile from a specific user
-UserRouter.get("/profile", (req, res) => {
-  const userId = parseInt(req.query.userId);
-  if (!userId) {
-    res.status(StatusCodes.BAD_REQUEST).send(ReasonPhrases.BAD_REQUEST);
-    return;
+// PUT - /v1/user/update: Profil Updaten
+router.put("/update", (req, res) => {
+  // Implementierung des Profil-Updates
+  if (!req.body.userId) {
+    return res.status(HttpStatus.BAD_REQUEST).send("userId erforderlich.");
   }
-  const userProfile = profiles.find((item) => item.id === userId);
-  res.status(StatusCodes.OK).json({ profile: userProfile });
+  // Weitere Logik für das Profil-Update
 });
 
-//  ***PUT REQUESTS***
-UserRouter.put("/profile/update", (req, res) => {
-  const { username, userId } = req.body;
-
-  const currentUser = profiles.find((item) => item.id === userId);
-  currentUser.username = username;
-
-  const deletedProfiles = profiles.filter((item) => item.id !== userId);
-  deletedProfiles.push(currentUser);
-
-  profiles = deletedProfiles;
-
-  res.json({ updatedProfile: currentUser });
+// DELETE /v1/user/delete: Löschen des Benutzers
+router.delete("/delete", (req, res) => {
+  // Implementierung zum Löschen des Benutzers
+  if (!req.body.userId) {
+    return res.status(HttpStatus.BAD_REQUEST).send("userId erforderlich.");
+  }
+  // Weitere Logik zum Löschen des Benutzers
 });
 
-//  ***DELETE REQUESTS***
-UserRouter.delete("/profile", (req, res) => {
-  const { userId } = req.body;
-
-  const deletedProfiles = profiles.filter((item) => item.id !== userId);
-  profiles = deletedProfiles;
-
-  res.json({ deletedUserId: userId });
-});
-
-module.exports = { UserRouter };
+module.exports = router;
